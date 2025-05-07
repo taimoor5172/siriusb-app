@@ -2,17 +2,20 @@
 "use client";
 
 import Header from './components/Header';
+import Carousel from './components/Carousel';
 
 export default function Home() {
+  const carouselImages: string[] = [
+    'https://www.blackngreen.com/img/carousel_1.png',
+    'https://www.blackngreen.com/img/EVA_carousel_web.png', 
+    'https://www.blackngreen.com/img/eva_ai_automation.jpg',
+  ];
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome to Our Website</h1>
-        <p className="mt-4 text-lg text-gray-500">
-          Hover over the Products and Solutions in the header to see dropdown menus.
-        </p>
-      </div>
+      <section className="w-full">
+        <Carousel images={carouselImages} autoPlayInterval={5000} />
+      </section>
     </div>
   );
 }

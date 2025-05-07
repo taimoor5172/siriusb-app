@@ -2,66 +2,79 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { MenuItem} from '../types/navigation';
+import { menuData } from '../constants/menu';
 
-// Define TypeScript interfaces for our data structures
-interface MenuItem {
-  name: string;
-  path: string;
-}
+// Components
+const Logo = () => (
+  <div className="flex-shrink-0">
+    <Link href="/" className="flex items-center">
+      <Image 
+        src="https://siriusb.pk/wp-content/uploads/2024/11/siriusb-1-300x88.png" 
+        alt="Company Logo" 
+        width={120}
+        height={40}
+        className="h-8 w-auto" 
+      />
+    </Link>
+  </div>
+);
 
-interface MenuData {
-  products: MenuItem[];
-  solutions: MenuItem[];
-  resources: MenuItem[];
-}
+const DropdownButton = ({ label }: { label: string }) => (
+  <button className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150">
+    {label}
+    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+);
+
+const DropdownMenu = ({ items }: { items: MenuItem[] }) => (
+  <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+    <div className="py-1">
+      {items.map((item) => (
+        <Link
+          key={item.path}
+          href={item.path}
+          className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
+  </div>
+);
+
+const NavItem = ({ href, label }: { href: string; label: string }) => (
+  <Link 
+    href={href}
+    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
+  >
+    {label}
+  </Link>
+);
+
+const MobileMenuButton = () => (
+  <div className="flex md:hidden">
+    <button className="bg-white p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+);
 
 const Header: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  // Menu data structure - can be easily extended with more items or categories
-  const menuData: MenuData = {
-    products: [
-      { name: 'SpatialSense Scanner', path: '/products/spatial-scanner' },
-      { name: 'SpatialSense Cloud', path: '/products/spatial-cloud' },
-      { name: 'SpatialSense Edge Device', path: '/products/spatial-edge' },
-    ],
-    solutions: [
-      { name: 'SpatialTwin: TreeGuard', path: '/solutions/treeguard' },
-      { name: 'SpatialTwin: TrackVision', path: '/solutions/trackvision' },
-      { name: 'SpatialTwin: BlastVue', path: '/solutions/blastvue' },
-    ],
-    resources: [
-      { name: 'Documentation', path: '/resources/docs' },
-      { name: 'Blog', path: '/resources/blog' },
-      { name: 'Support', path: '/resources/support' },
-    ],
-  };
-
-  // Handle menu open/close
-  const handleMenuOpen = (menu: string): void => {
-    setActiveMenu(menu);
-  };
-
-  const handleMenuClose = (): void => {
-    setActiveMenu(null);
-  };
+  const handleMenuOpen = (menu: string): void => setActiveMenu(menu);
+  const handleMenuClose = (): void => setActiveMenu(null);
 
   return (
     <header className="sticky top-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Image 
-                src="https://siriusb.pk/wp-content/uploads/2024/11/siriusb-1-300x88.png" 
-                alt="Company Logo" 
-                width={120}
-                height={40}
-                className="h-8 w-auto" 
-              />
-            </Link>
-          </div>
+          <Logo />
 
           {/* Main Navigation */}
           <nav className="hidden md:flex flex-1 justify-center">
@@ -72,30 +85,8 @@ const Header: React.FC = () => {
                 onMouseEnter={() => handleMenuOpen('products')}
                 onMouseLeave={handleMenuClose}
               >
-                <button 
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
-                >
-                  Products
-                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {activeMenu === 'products' && (
-                  <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
-                      {menuData.products.map((item) => (
-                        <Link
-                          key={item.path}
-                          href={item.path}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <DropdownButton label="Products" />
+                {activeMenu === 'products' && <DropdownMenu items={menuData.products} />}
               </div>
 
               {/* Solutions Dropdown */}
@@ -104,30 +95,8 @@ const Header: React.FC = () => {
                 onMouseEnter={() => handleMenuOpen('solutions')}
                 onMouseLeave={handleMenuClose}
               >
-                <button 
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
-                >
-                  Solutions
-                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {activeMenu === 'solutions' && (
-                  <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
-                      {menuData.solutions.map((item) => (
-                        <Link
-                          key={item.path}
-                          href={item.path}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <DropdownButton label="Solutions" />
+                {activeMenu === 'solutions' && <DropdownMenu items={menuData.solutions} />}
               </div>
 
               {/* Resources Dropdown */}
@@ -136,47 +105,12 @@ const Header: React.FC = () => {
                 onMouseEnter={() => handleMenuOpen('resources')}
                 onMouseLeave={handleMenuClose}
               >
-                <button 
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
-                >
-                  Resources
-                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {activeMenu === 'resources' && (
-                  <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
-                      {menuData.resources.map((item) => (
-                        <Link
-                          key={item.path}
-                          href={item.path}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <DropdownButton label="Resources" />
+                {activeMenu === 'resources' && <DropdownMenu items={menuData.resources} />}
               </div>
 
-              {/* About Us (Regular Link) */}
-              <Link 
-                href="/about-us"
-                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
-              >
-                About Us
-              </Link>
-
-              {/* Careers (Regular Link) */}
-              <Link
-                href="/careers"
-                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition duration-150"
-              >
-                Careers
-              </Link>
+              <NavItem href="/about-us" label="About Us" />
+              <NavItem href="/careers" label="Careers" />
             </div>
           </nav>
 
@@ -190,14 +124,7 @@ const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button className="bg-white p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          <MobileMenuButton />
         </div>
       </div>
     </header>
