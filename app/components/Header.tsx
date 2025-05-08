@@ -1,8 +1,9 @@
 // components/Header.tsx
+"use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MenuItem} from '../types/navigation';
+import { MenuItem} from '../interfaces/navigation';
 import { menuData } from '../constants/menu';
 
 // Components
@@ -109,15 +110,16 @@ const Header: React.FC = () => {
                 {activeMenu === 'resources' && <DropdownMenu items={menuData.resources} />}
               </div>
 
-              <NavItem href="/about-us" label="About Us" />
-              <NavItem href="/careers" label="Careers" />
+              <NavItem href="/pages/customers" label="Customers" />
+              <NavItem href="/pages/about-us" label="About Us" />
+              
             </div>
           </nav>
 
           {/* CTA Button */}
           <div className="hidden md:flex">
             <Link
-              href="/demo"
+              href="/pages/demo"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Request a demo

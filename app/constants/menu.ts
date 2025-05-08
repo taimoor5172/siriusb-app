@@ -1,4 +1,4 @@
-import { MenuData } from '../types/navigation';
+import { MenuData } from '../interfaces/navigation';
 
 export const menuData: MenuData = {
   products: [
