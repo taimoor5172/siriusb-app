@@ -3,7 +3,8 @@
 
 import Header from './components/Header';
 import Carousel from './components/Carousel';
-import CustomerGrid from './components/CustomerGrid';
+import { ServicesSection } from './components/ServiceSection';
+import { Customers } from './components/Customers';
 export default function Home() {
   const carouselImages: string[] = [
     'https://www.blackngreen.com/img/carousel_1.png',
@@ -16,7 +17,8 @@ export default function Home() {
       <section className="w-full">
         <Carousel images={carouselImages} autoPlayInterval={5000} />
       </section>
-      <CustomerGrid />
+      <ServicesSection />
+      <Customers/>
     </div>
   );
 }
