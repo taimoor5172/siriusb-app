@@ -90,16 +90,6 @@ const Header: React.FC = () => {
                 {activeMenu === 'products' && <DropdownMenu items={menuData.products} />}
               </div>
 
-              {/* Solutions Dropdown */}
-              <div 
-                className="relative"
-                onMouseEnter={() => handleMenuOpen('solutions')}
-                onMouseLeave={handleMenuClose}
-              >
-                <DropdownButton label="Solutions" />
-                {activeMenu === 'solutions' && <DropdownMenu items={menuData.solutions} />}
-              </div>
-
               <NavItem href="/pages/customers" label="Customers" />
               <NavItem href="/pages/services" label="Services" />
               <NavItem href="/pages/about-us" label="About Us" />

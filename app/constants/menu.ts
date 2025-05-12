@@ -2,9 +2,9 @@ import { MenuData } from '../interfaces/navigation';
 
 export const menuData: MenuData = {
   products: [
-    { name: 'SpatialSense Scanner', path: '/products/spatial-scanner' },
-    { name: 'SpatialSense Cloud', path: '/products/spatial-cloud' },
-    { name: 'SpatialSense Edge Device', path: '/products/spatial-edge' },
+    { name: 'Awow Company', path: 'https://awowcompany.com/' },
+    { name: 'SiriusBpk', path: 'https://siriusb.pk/' },
+    { name: 'Yakaaz', path: 'http://yakaaz.siriusb.pk/' },
   ],
   solutions: [
     { name: 'SpatialTwin: TreeGuard', path: '/solutions/treeguard' },
